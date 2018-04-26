@@ -22,7 +22,7 @@ public class Controller {
             if(name.equals("lingeling")){
                 processBuilder = new ProcessBuilder(filePath,fileInputPath, "-o" ,fileOutputPath);
             }
-            else if (name.equals("zchaff")){
+            else if (name.equals("zchaff") ||name.equals("cadical") ){
                 processBuilder = new ProcessBuilder(filePath,fileInputPath);
             }else{
                 processBuilder = new ProcessBuilder(filePath,fileInputPath ,fileOutputPath);

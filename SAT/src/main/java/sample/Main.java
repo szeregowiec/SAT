@@ -3,26 +3,17 @@ package sample;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.sat4j.reader.DimacsReader;
 import org.sat4j.tools.DimacsOutputSolver;
-
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
 
 public class Main extends Application {
 
@@ -34,23 +25,17 @@ public class Main extends Application {
     String saveOutput;
     Label labelChoose;
     boolean satelite;
+    Button saveFile;
 
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        // Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
         DimacsReader dimacsReader = new DimacsReader(new DimacsOutputSolver());
-        //dimacsReader.parseInstance("SatSolverInterface/src/main/java/solvers/input.txt");
-
-
         primaryStage.setTitle("SAT Solver Interfejs");
         Pane pane = new Pane();
         saveOutput ="";
-         satelite = false;
-
-
-
+        satelite = false;
 
 
         Label chooseFile = new Label();
@@ -58,7 +43,6 @@ public class Main extends Application {
         chooseFile.setText("Wybierz plik");
         chooseFile.setLayoutX(200);
         chooseFile.setLayoutY(20);
-        //chooseFile.setPadding(new Insets(10));
         pane.getChildren().addAll(chooseFile);
 
 
@@ -94,7 +78,6 @@ public class Main extends Application {
         pane.getChildren().addAll(t);
         chooseFileButton.setLayoutX(200);
         chooseFileButton.setLayoutY(50);
-        //chooseFileButton.setPadding(new Insets(10));
 
         fileChecker = new Label();
         fileChecker.setText("Wybrany plik : ");
@@ -111,13 +94,24 @@ public class Main extends Application {
 
         ComboBox<String> comboBox = new ComboBox<>();
         comboBox.getItems().addAll(
+                "Cadical",
                 "Glucose",
                 "Lingeling",
                 "Minisat",
                 "Riss",
                 "Zchaff"
         );
-        comboBox.setValue("Glucose");
+        comboBox.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(comboBox.getValue().toString().equals("Cadical") ||comboBox.getValue().toString().equals("Zchaff") ){
+                    saveFile.setDisable(true);
+                }else{
+                    saveFile.setDisable(false);
+                }
+            }
+        });
+        comboBox.setValue("Cadical");
         comboBox.setLayoutX(100);
         comboBox.setLayoutY(170);
         pane.getChildren().addAll(comboBox);
@@ -140,11 +134,6 @@ public class Main extends Application {
         pane.getChildren().addAll(sateliteCheckBox);
 
 
-
-
-
-
-
         executeButton = new Button("Wykonaj");
         executeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -152,6 +141,8 @@ public class Main extends Application {
                 String s = comboBox.getValue().toString();
                 String output = new String();
                 switch (s){
+                    case "Cadical" : output = Controller.runSATSolver("cadical",fileInput,saveOutput,satelite);
+                        break;
                     case "Glucose" : output = Controller.runSATSolver("glucose_static",fileInput,saveOutput,satelite);
                         break;
                     case "Lingeling" : output = Controller.runSATSolver("lingeling",fileInput,saveOutput,satelite);
@@ -178,7 +169,7 @@ public class Main extends Application {
         labelSave.setLayoutY(270);
         pane.getChildren().addAll(labelSave);
 
-        Button saveFile = new Button("Zapisz");
+         saveFile = new Button("Zapisz");
         saveFile.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
