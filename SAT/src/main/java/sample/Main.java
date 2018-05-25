@@ -94,24 +94,26 @@ public class Main extends Application {
 
         ComboBox<String> comboBox = new ComboBox<>();
         comboBox.getItems().addAll(
+                "AbcdSAT",
                 "Cadical",
                 "Glucose",
                 "Lingeling",
                 "Minisat",
                 "Riss",
+                "Syrup",
                 "Zchaff"
         );
         comboBox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(comboBox.getValue().toString().equals("Cadical") ||comboBox.getValue().toString().equals("Zchaff") ){
+                if(comboBox.getValue().toString().equals("Syrup") || comboBox.getValue().toString().equals("AbcdSAT") ||comboBox.getValue().toString().equals("Zchaff") ||comboBox.getValue().toString().equals("Cadical") ){
                     saveFile.setDisable(true);
                 }else{
                     saveFile.setDisable(false);
                 }
             }
         });
-        comboBox.setValue("Cadical");
+        comboBox.setValue("AbcdSAT");
         comboBox.setLayoutX(100);
         comboBox.setLayoutY(170);
         pane.getChildren().addAll(comboBox);
@@ -141,6 +143,8 @@ public class Main extends Application {
                 String s = comboBox.getValue().toString();
                 String output = new String();
                 switch (s){
+                    case "AbcdSAT" : output = Controller.runSATSolver("abcdsat_p",fileInput,saveOutput,satelite);
+                        break;
                     case "Cadical" : output = Controller.runSATSolver("cadical",fileInput,saveOutput,satelite);
                         break;
                     case "Glucose" : output = Controller.runSATSolver("glucose_static",fileInput,saveOutput,satelite);
@@ -150,6 +154,8 @@ public class Main extends Application {
                     case "Minisat" : output = Controller.runSATSolver("minisat",fileInput,saveOutput,satelite);
                         break;
                     case "Riss" : output = Controller.runSATSolver("riss",fileInput,saveOutput,satelite);
+                        break;
+                    case "Syrup" : output = Controller.runSATSolver("glucose-syrup",fileInput,saveOutput,satelite);
                         break;
                     case "Zchaff" : output = Controller.runSATSolver("zchaff",fileInput,saveOutput,satelite);
                         break;
@@ -188,6 +194,7 @@ public class Main extends Application {
         });
         saveFile.setLayoutX(100);
         saveFile.setLayoutY(300);
+        saveFile.setDisable(true);
         pane.getChildren().addAll(saveFile);
 
 
