@@ -80,7 +80,7 @@ public class Main extends Application {
         chooseFileButton.setLayoutY(50);
 
         fileChecker = new Label();
-        fileChecker.setText("Wybrany plik : ");
+        fileChecker.setText("Problem SAT : ");
         fileChecker.setLayoutX(110);
         fileChecker.setLayoutY(100);
         pane.getChildren().addAll(fileChecker);
